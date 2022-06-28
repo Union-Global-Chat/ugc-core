@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use env_logger::Env;
 
 pub mod api;
-use crate::api::{main, message};
+use crate::api::{main, message, ws};
 
 #[derive(Serialize, Deserialize)]
 struct IndexContent {
@@ -28,6 +28,7 @@ async fn main() -> std::io::Result<()> {
             .service(main::index)
             .service(message::post_message)
             .service(message::get_messages)
+            .route("/api/ws", web::get().to(ws::index))
             .wrap(Logger::default())
             .wrap(Logger::new("%a %{User-Agent}i"))
     })

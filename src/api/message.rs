@@ -26,6 +26,7 @@ pub struct ResponseContent {
 
 #[post("/api/messages")]
 pub async fn post_message(message: web::Json<Message>) -> impl Responder {
+    println!("{}", message.content);
     web::Json(ResponseContent {
         code: "200".to_string(),
         message: "OK".to_string(),
