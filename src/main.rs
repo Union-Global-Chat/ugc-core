@@ -1,13 +1,16 @@
 use actix_web::{get, web, App, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
 
+pub mod api;
+use crate::api::{main, message};
+
 #[derive(Serialize, Deserialize)]
 struct IndexContent {
     message: String,
 }
 
 #[get("/")]
-async fn greet() -> impl Responder {
+async fn index() -> impl Responder {
     let content = IndexContent {
         message: "This is api core.".to_string(),
     };
@@ -17,9 +20,13 @@ async fn greet() -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
-        App::new().service(greet)
+        App::new()
+            .service(index)
+            .service(main::index)
+            .service(message::post_message)
+            .service(message::get_messages)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind("localhost:8080")?
     .run()
     .await
 }
