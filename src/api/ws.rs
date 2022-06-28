@@ -5,7 +5,7 @@ use actix_web_actors::ws;
 use serde_json::{Value, json};
 
 
-struct UgcWs;
+struct UgcWs {}
 
 impl Actor for UgcWs {
     type Context = ws::WebsocketContext<Self>;
